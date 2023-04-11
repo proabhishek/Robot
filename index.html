@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles.css">
+    <title>Robot or Not</title>
+</head>
+<body>
+    
+   <div class="img-container">
+       <img id ="a" src="" alt=""/>
+       <img id ="b" src="" alt=""/>
+       <img id ="c" src="" alt=""/>
+       <img id ="d" src="" alt=""/>
+       <img id ="e" src="" alt=""/>
+       <img id ="f" src="" alt=""/>
+   </div>
+     
+   <script>
+
+       //select images: 
+
+       let images = document.querySelectorAll("img");
+       let imgContainer = document.querySelector(".img-container");
+       
+       let imgClassList = ["img1", "img2", "img3", "img4", "img5"];
+       let randomImg = imgClassList[parseInt(Math.random()*imgClassList.length)];
+       imgClassList.push(randomImg); // ["img1", "img2", "img3", "img4", "img5", "img3"]
+
+
+       
+
+       console.log(imgClassList);
+        let k = 0
+        while(k<imgClassList.length){
+            let htmlImg = images[parseInt(Math.random()*images.length)];
+          
+            if(htmlImg.className == ""){
+                htmlImg.addEventListener("click", robotOrNot)
+                htmlImg.className = imgClassList[k++];
+
+            }
+        }
+        // created a h3:
+        let heading3 = document.createElement("h3");
+        heading3.innerText = "Please click on the identical tiles to verify that you are not a robot";
+        heading3.id = "h"
+         // prepend , append
+        imgContainer.prepend(heading3)
+
+        let reset  = document.createElement("button");
+        reset.innerText = "Reset";
+        reset.classList.add("hide");
+        document.body.append(reset);
+        reset.addEventListener("click", resetLogic)
+        let verify  = document.createElement("button");
+        verify.innerText = "Verify";
+        document.body.append(verify);
+        reset.classList.add("hide");
+        reset.addEventListener("click", verifyLogic)
+        let para = document.createElement("p");
+        para.innerText = "can select max two image"
+
+        // para.style.color = "red"
+        // para.style.backgroundColor= "black";
+        // para.style.textAlign = "center";
+
+        para.style.cssText = `
+        color: red;
+        background-color: black;
+        text-align: center;
+        padding: 10px;
+        font-size: 40px;
+        `
+
+
+
+        let imageCounter = 0
+         let previousImage_id = "";
+        function robotOrNot(event){
+            
+            let selectedImg = event.target;
+            selectedImg.classList.add("selected");  // b
+            reset.classList.remove("hide");
+           
+            if(selectedImg.id != previousImage_id){
+                  previousImage_id = selectedImg.id; // b
+                 imageCounter++; // 2
+            }
+            
+            if(imageCounter == 2){
+                verify.classList.remove("hide");
+            }
+
+            if(imageCounter >= 3){
+                  document.body.append(para);
+                  selectedImg.classList.remove("selected");
+            }
+
+        }
+
+
+        function resetLogic(){
+            reset.classList.add("hide");
+            verify.classList.add("hide");
+            let images_selected = document.querySelectorAll(".selected");
+
+            for(let t of images_selected){
+                t.classList.remove("selected");
+            }
+        }
+
+        function verifyLogic(){
+            
+        }
+
+
+   </script>
+
+
+
+
+
+</body>
+</html>
